@@ -18,11 +18,17 @@ const createStore = () => {
         const index = state.loadedMemos.findIndex((v) => v.id === id)
         state.loadedMemos.splice(index, 1)
       },
-      addFavo(state, id){
+      addFavo(state, { id, favoriteCount }){
         const index = state.loadedMemos.findIndex((v) => v.id === id)
+        const memo = state.loadedMemos[index]
+        memo.favorite_count = favoriteCount
+        state.loadedMemos.splice(index, 1, memo)
       },
-      unFavo(state, id){
+      unFavo(state, { id, favoriteCount }){
         const index = state.loadedMemos.findIndex((v) => v.id === id)
+        const memo = state.loadedMemos[index]
+        memo.favorite_count = favoriteCount
+        state.loadedMemos.splice(index, 1, memo)
       }
     },
     actions: {
@@ -53,14 +59,14 @@ const createStore = () => {
         return this.$axios
         .post(`${url}/memos/${id}/favorites`)
         .then((res) => {
-          commit('addFavo', id)
+          commit('addFavo', { id, favoriteCount: res.data.favorite_count })
         })
       },
       unFavo({ commit }, id){
         return this.$axios
         .delete(`${url}/memos/${id}/favorites`)
         .then((res) => {
-          commit('unFavo', id)
+          commit('unFavo', { id, favoriteCount: res.data.favorite_count })
         })
       }
     },
