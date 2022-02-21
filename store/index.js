@@ -20,6 +20,9 @@ const createStore = () => {
       },
       addFavo(state, id){
         const index = state.loadedMemos.findIndex((v) => v.id === id)
+      },
+      unFavo(state, id){
+        const index = state.loadedMemos.findIndex((v) => v.id === id)
       }
     },
     actions: {
@@ -51,6 +54,13 @@ const createStore = () => {
         .post(`${url}/memos/${id}/favorites`)
         .then((res) => {
           commit('addFavo', id)
+        })
+      },
+      unFavo({ commit }, id){
+        return this.$axios
+        .delete(`${url}/memos/${id}/favorites`)
+        .then((res) => {
+          commit('unFavo', id)
         })
       }
     },
