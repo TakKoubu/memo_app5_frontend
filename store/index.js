@@ -17,6 +17,9 @@ const createStore = () => {
       deleteMemo(state, id){
         const index = state.loadedMemos.findIndex((v) => v.id === id)
         state.loadedMemos.splice(index, 1)
+      },
+      addFavo(state, id){
+        const index = state.loadedMemos.findIndex((v) => v.id === id)
       }
     },
     actions: {
@@ -41,6 +44,13 @@ const createStore = () => {
         .delete(`${url}/memos/${id}`)
         .then((res) => {
           commit('deleteMemo', id)
+        })
+      },
+      addFavo({ commit }, id){
+        return this.$axios
+        .post(`${url}/memos/${id}/favorites`)
+        .then((res) => {
+          commit('addFavo', id)
         })
       }
     },
