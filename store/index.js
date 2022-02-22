@@ -13,6 +13,10 @@ const createStore = () => {
       },
       addMemo(state, memo){
         state.loadedMemos.push(memo);
+      },
+      deleteMemo(state, id){
+        const index = state.loadedMemos.findIndex((v) => v.id === id)
+        state.loadedMemos.splice(index, 1)
       }
     },
     actions: {
@@ -31,6 +35,13 @@ const createStore = () => {
           commit('addMemo', res.data)
         })
         .catch((e) => console.log(e))
+      },
+      deleteMemo({ commit }, id){
+        return this.$axios
+        .delete(`${url}/memos/${id}`)
+        .then((res) => {
+          commit('deleteMemo', id)
+        })
       }
     },
     getters: {

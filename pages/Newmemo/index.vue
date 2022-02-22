@@ -14,7 +14,6 @@ export default {
   },
   methods: {
     addMemo() {
-      console.log(this.memo);
       this.$store.dispatch("addMemo", this.content).then(() => {
         this.$router.push("/memo");
       });
