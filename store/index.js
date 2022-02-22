@@ -75,12 +75,12 @@ const createStore = () => {
           commit('unFavo', { id, favoriteCount: res.data.favorite_count })
         })
       },
-      async fetchMemo({ commit }, id) {
-        // サーバー側から返ってきたデータを定数に入れる
-        const res = await this.$axios.$get(`${url}/memos/${id}`)
-        console.log(res)
-        // mutationの実行 引数は返ってきたres.data
-        commit('memoSet', { memo: res.data })
+      fetchMemo({ commit }, id) {
+        return this.$axios
+        .$get(`${url}/memos/${id}`)
+        .then((res) => {
+          commit('memoSet', res)
+        })
       },
     },
     getters: {

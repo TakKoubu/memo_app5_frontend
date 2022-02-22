@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nuxt-link to="`/memo/${memo.id}`" :memo="memo">
+    <nuxt-link v-bind:to="`/memo/${memo.id}`">
       {{ memo.id }}
       {{ memo.content }}
     </nuxt-link>

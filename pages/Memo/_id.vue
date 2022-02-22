@@ -1,21 +1,16 @@
 <template>
-  <div>
-    {{ memo.content }}
-  </div>
+  <div>{{ memo.content }}</div>
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
-  props: {
-    memo: {
-      type: Object,
-      required: true,
-    },
-  },
   async asyncData({ store, route }) {
-    console.log(route);
-    // アクションを呼び出し、フロントのmemoのidを引数として渡す
-    await Promise.all([store.dispatch("fetchMemo", route.params.id)]);
+    store.dispatch("fetchMemo", route.params.id);
+  },
+  computed: {
+    ...mapState(["memo"]),
   },
 };
 </script>
