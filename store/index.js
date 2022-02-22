@@ -31,7 +31,11 @@ const createStore = () => {
         memo.favorite_count = favoriteCount
         memo.is_like = false
         state.loadedMemos.splice(index, 1, memo)
-      }
+      },
+      // stateにサーバー側から返ってきたmemoをstateに入れる
+      memoSet(state, memo) {
+        state.memo = memo
+      },
     },
     actions: {
       fetchMemos({ commit }){
@@ -70,7 +74,14 @@ const createStore = () => {
         .then((res) => {
           commit('unFavo', { id, favoriteCount: res.data.favorite_count })
         })
-      }
+      },
+      async fetchMemo({ commit }, id) {
+        // サーバー側から返ってきたデータを定数に入れる
+        const res = await this.$axios.$get(`${url}/memos/${id}`)
+        console.log(res)
+        // mutationの実行 引数は返ってきたres.data
+        commit('memoSet', { memo: res.data })
+      },
     },
     getters: {
       loadedMemos(state){
