@@ -1,7 +1,9 @@
 <template>
   <div>
-    {{ memo.id }}
-    {{ memo.content }}
+    <nuxt-link v-bind:to="`/memo/${memo.id}`">
+      {{ memo.id }}
+      {{ memo.content }}
+    </nuxt-link>
     <button @click="deleteMemo(memo)">削除</button>
     <button v-if="memo.is_like" @click="unFavo(memo)">お気に入り解除</button>
     <button v-else @click="addFavo(memo)">お気に入り</button>
