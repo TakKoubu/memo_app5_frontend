@@ -10,6 +10,9 @@ const createStore = () => {
     mutations: {
       setMemos(state, memos){
         state.loadedMemos = memos;
+      },
+      addMemo(state, memo){
+        state.loadedMemos.push(memo);
       }
     },
     actions: {
@@ -17,8 +20,15 @@ const createStore = () => {
         return this.$axios
         .get(`${url}/memos`)
         .then((res) => {
-          console.log(res.data)
           commit('setMemos', res.data)
+        })
+        .catch((e) => console.log(e))
+      },
+      addMemo({ commit }, content){
+        return this.$axios
+        .post(`${url}/memos`, { memo: { content: content }})
+        .then((res) => {
+          commit('addMemo', res.data)
         })
         .catch((e) => console.log(e))
       }
