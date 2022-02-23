@@ -1,6 +1,7 @@
 <template>
   <section>
-    <input v-model="searchWord" @input="onInput" />
+    <input v-model="query.content_cont" />
+    <button @click="searchMemo">Search</button>
     <MemoPreview v-for="memo in loadedMemos" :key="memo.id" :memo="memo" />
   </section>
 </template>
@@ -9,11 +10,15 @@
 import MemoPreview from "@/components/MemoPreview";
 import { mapGetters } from "vuex";
 import { mapActions } from "vuex";
+import axios from "axios";
+import Qs from "qs";
 
 export default {
   data() {
     return {
-      searchWord: "",
+      query: {
+        content_cont: "",
+      },
     };
   },
   components: {
@@ -24,8 +29,22 @@ export default {
   },
   methods: {
     ...mapActions(["fetchMemos"]),
-    oninput() {
-      this.$store.dispatch("fetchMemos", this.searchWord);
+    searchMemo() {
+      axios
+        .get("http://localhost:5000/api/memos/search", {
+          params: {
+            q: this.query,
+          },
+          paramsSerializer(params) {
+            return Qs.stringify(params, { arrayFormat: "brackets" });
+          },
+        })
+        .then((res) => {
+          this.$store.commit("setMemos", res.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     },
   },
   computed: {
