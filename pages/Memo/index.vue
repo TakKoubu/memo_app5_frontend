@@ -31,7 +31,7 @@ export default {
     ...mapActions(["fetchMemos"]),
     searchMemo() {
       axios
-        .get("http://localhost:5000/api/memos/search", {
+        .get("http://localhost:5000/api/memos", {
           params: {
             q: this.query,
           },
