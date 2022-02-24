@@ -1,12 +1,16 @@
 <template>
   <div>
     <textarea v-model="content" class="memo-text"></textarea>
-    <select name="sampleName[]" class="select-multiple" multiple>
-      <div v-for="tag in loadedTags" :key="tag.id">
-        <option :value="tag.name">tag.name</option>
-      </div>
+    <select
+      name="tag-form"
+      class="select-multiple"
+      v-model="selectTag"
+      multiple
+    >
+      <option v-for="tag in loadedTags" :key="tag.id" :value="tag.name">
+        {{ tag.name }}
+      </option>
     </select>
-    {{ loadedTags }}
     <button @click="addMemo" class="memo-add-button">作成</button>
   </div>
 </template>
@@ -19,13 +23,18 @@ export default {
   data() {
     return {
       content: "",
+      selectTag: "",
     };
   },
   methods: {
     addMemo() {
-      this.$store.dispatch("addMemo", this.content).then(() => {
-        this.$router.push("/memo");
-      });
+      this.$store
+        .dispatch("addMemo", {
+          memo: { content: this.content, tags: this.selectTag },
+        })
+        .then(() => {
+          this.$router.push("/memo");
+        });
     },
     ...mapActions(["fetchTags"]),
   },
