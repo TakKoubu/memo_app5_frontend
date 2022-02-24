@@ -32,7 +32,6 @@ export default {
     addFavo(memo) {
       this.$store.dispatch("addFavo", memo.id).then(() => {
         this.$router.push("/memo");
-        console.log(memo);
       });
     },
     unFavo(memo) {
