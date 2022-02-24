@@ -2,17 +2,19 @@
   <div>
     <textarea v-model="content" class="memo-text"></textarea>
     <select name="sampleName[]" class="select-multiple" multiple>
-      <option value="値Ａ">選択肢Ａ</option>
-      <option value="値Ｂ">選択肢Ｂ</option>
-      <option value="値Ｃ">選択肢Ｃ</option>
-      <option value="値Ｄ">選択肢Ｄ</option>
-      <option value="値Ｅ">選択肢Ｅ</option>
+      <div v-for="tag in loadedTags" :key="tag.id">
+        <option :value="tag.name">tag.name</option>
+      </div>
     </select>
+    {{ loadedTags }}
     <button @click="addMemo" class="memo-add-button">作成</button>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import { mapActions } from "vuex";
+
 export default {
   data() {
     return {
@@ -25,6 +27,13 @@ export default {
         this.$router.push("/memo");
       });
     },
+    ...mapActions(["fetchTags"]),
+  },
+  created() {
+    this.fetchTags();
+  },
+  computed: {
+    ...mapGetters(["loadedTags"]),
   },
 };
 </script>

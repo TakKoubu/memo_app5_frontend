@@ -6,10 +6,14 @@ const createStore = () => {
   return new Vuex.Store({
     state: {
       loadedMemos: [],
+      loadedTags: []
     },
     mutations: {
       setMemos(state, memos){
         state.loadedMemos = memos;
+      },
+      setTags(state, tags){
+        state.loadedTags = tags;
       },
       addMemo(state, memo){
         state.loadedMemos.push(memo);
@@ -43,6 +47,14 @@ const createStore = () => {
         .get(`${url}/memos`)
         .then((res) => {
           commit('setMemos', res.data)
+        })
+        .catch((e) => console.log(e))
+      },
+      fetchTags({ commit }){
+        return this.$axios
+        .get(`${url}/tags`)
+        .then((res) => {
+          commit('setTags', res.data)
         })
         .catch((e) => console.log(e))
       },
@@ -86,6 +98,9 @@ const createStore = () => {
     getters: {
       loadedMemos(state){
         return state.loadedMemos;
+      },
+      loadedTags(state){
+        return state.loadedTags;
       }
     }
   })
