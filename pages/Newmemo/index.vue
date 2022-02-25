@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div id="memoapp">
     <textarea v-model="content" class="memo-text"></textarea>
     <select
+      v-model="selectTag"
       name="tag-form"
       class="select-multiple"
-      v-model="selectTag"
       multiple
     >
       <option v-for="tag in loadedTags" :key="tag.id" :value="tag.name">
@@ -23,15 +23,13 @@ export default {
   data() {
     return {
       content: "",
-      selectTag: "",
+      selectTag: [],
     };
   },
   methods: {
     addMemo() {
       this.$store
-        .dispatch("addMemo", {
-          memo: { content: this.content, tags: this.selectTag },
-        })
+        .dispatch("addMemo", [this.content, this.selectTags])
         .then(() => {
           this.$router.push("/memo");
         });
