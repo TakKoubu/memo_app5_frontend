@@ -58,9 +58,9 @@ const createStore = () => {
         })
         .catch((e) => console.log(e))
       },
-      addMemo({ commit }, { content, tags }){
+      addMemo({ commit }, params){
         return this.$axios
-        .post(`${url}/memos`, { memo: { content: content, tags: tags }})
+        .post(`${url}/memos`, { memo: params })
         .then((res) => {
           commit('addMemo', res.data)
         })
