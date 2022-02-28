@@ -20,7 +20,6 @@ const createStore = () => {
         state.loadedMemos.push(memo);
       },
       updateMemo(state, memo){
-        console.log(memo)
         const index = state.loadedMemos.findIndex((v) => v.id === memo.id)
         state.loadedMemos[index].splice(index, 1, memo)
       },
