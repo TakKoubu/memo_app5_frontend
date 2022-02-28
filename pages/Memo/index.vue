@@ -1,6 +1,16 @@
 <template>
   <section>
-    <input v-model="query.content_or_tags_name_cont" />
+    <input v-model="query.content_cont" />
+    <select
+      v-model="query.tags_name_in"
+      name="tag-form"
+      class="select-multiple"
+      multiple
+    >
+      <option v-for="tag in loadedTags" :key="tag.id" :value="tag.name">
+        {{ tag.name }}
+      </option>
+    </select>
     <button @click="searchMemo">Search</button>
     <MemoPreview v-for="memo in loadedMemos" :key="memo.id" :memo="memo" />
   </section>
@@ -17,7 +27,8 @@ export default {
   data() {
     return {
       query: {
-        content_or_tags_name_cont: "",
+        content_cont: "",
+        tags_name_in: [],
       },
     };
   },
@@ -26,6 +37,11 @@ export default {
   },
   created() {
     this.fetchMemos();
+    this.fetchTags();
+  },
+  computed: {
+    ...mapGetters(["loadedTags"]),
+    ...mapGetters(["loadedMemos"]),
   },
   methods: {
     ...mapActions(["fetchMemos"]),
@@ -46,9 +62,7 @@ export default {
           console.log(e);
         });
     },
-  },
-  computed: {
-    ...mapGetters(["loadedMemos"]),
+    ...mapActions(["fetchTags"]),
   },
 };
 </script>
