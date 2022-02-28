@@ -7,6 +7,9 @@
         タグ-{{ tag.name }}
       </li>
     </nuxt-link>
+    <button>
+      <nuxt-link :to="`/editmemo/${memo.id}`">編集</nuxt-link>
+    </button>
     <button @click="deleteMemo(memo)">削除</button>
     <button v-if="memo.is_like" @click="unFavo(memo)">お気に入り解除</button>
     <button v-else @click="addFavo(memo)">お気に入り</button>
