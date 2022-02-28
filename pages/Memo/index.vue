@@ -1,6 +1,6 @@
 <template>
   <section>
-    <input v-model="query.content_cont" />
+    <input v-model="query.content_or_tags_name_cont" />
     <button @click="searchMemo">Search</button>
     <MemoPreview v-for="memo in loadedMemos" :key="memo.id" :memo="memo" />
   </section>
@@ -17,7 +17,7 @@ export default {
   data() {
     return {
       query: {
-        content_cont: "",
+        content_or_tags_name_cont: "",
       },
     };
   },
