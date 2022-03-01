@@ -45,6 +45,18 @@ const createStore = () => {
       memoSet(state, memo) {
         state.memo = memo
       },
+      changeDone(state, memo) {
+        const index = state.loadedMemos.findIndex((v) => v.id === memo.id)
+        const object = state.loadedMemos[index] 
+        object.status = 'done'
+        state.loadedMemos.splice(index, 1, object)
+      },
+      changeInprogress(state, memo) {
+        const index = state.loadedMemos.findIndex((v) => v.id === memo.id)
+        const object = state.loadedMemos[index] 
+        object.status = 'inprogress'
+        state.loadedMemos.splice(index, 1, object)
+      },
     },
     actions: {
       fetchMemos({ commit }){
@@ -105,6 +117,20 @@ const createStore = () => {
         .$get(`${url}/memos/${id}`)
         .then((res) => {
           commit('memoSet', res)
+        })
+      },
+      changeDone({ commit }, memo) {
+        return this.$axios
+        .post(`${url}/memos/${memo.id}/statuses`)
+        .then((res) => {
+          commit('changeDone', res.data)
+        })
+      },
+      changeInprogress({ commit }, memo) {
+        return this.$axios
+        .delete(`${url}/memos/${memo.id}/statuses`)
+        .then((res) => {
+          commit('changeInprogress', res.data)
         })
       },
     },
