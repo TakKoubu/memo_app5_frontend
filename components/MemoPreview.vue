@@ -1,12 +1,28 @@
 <template>
   <div>
-    <nuxt-link :to="`/memo/${memo.id}`">
-      {{ memo.id }}
-      {{ memo.content }}
-      <li class="tag-list" v-for="tag in memo.tags" :key="tag.id">
-        タグ-{{ tag.name }}
-      </li>
-    </nuxt-link>
+    <div v-if="isEdit">
+      <input v-model="memo.content" />
+      <button
+        @click="
+          isEdit = !isEdit;
+          updateMemo(memo);
+        "
+      >
+        {{ isEdit ? "保存" : "編集" }}
+      </button>
+    </div>
+    <div v-else>
+      <nuxt-link :to="`/memo/${memo.id}`">
+        {{ memo.id }}
+        {{ memo.content }}
+        <li class="tag-list" v-for="tag in memo.tags" :key="tag.id">
+          タグ-{{ tag.name }}
+        </li>
+      </nuxt-link>
+      <button @click="isEdit = !isEdit">
+        {{ isEdit ? "保存" : "編集" }}
+      </button>
+    </div>
     <button>
       <nuxt-link :to="`/editmemo/${memo.id}`">編集</nuxt-link>
     </button>
@@ -19,6 +35,11 @@
 
 <script>
 export default {
+  data() {
+    return {
+      isEdit: false,
+    };
+  },
   name: "MemoPreview",
   props: {
     memo: {
@@ -41,6 +62,18 @@ export default {
       this.$store.dispatch("unFavo", memo.id).then(() => {
         this.$router.push("/memo");
       });
+    },
+    updateMemo(memo) {
+      console.log(memo);
+      this.$store
+        .dispatch("updateMemo", {
+          id: memo.id,
+          content: memo.content,
+          tags: memo.tags,
+        })
+        .then(() => {
+          this.$router.push("/memo");
+        });
     },
   },
 };
