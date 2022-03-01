@@ -6,7 +6,8 @@ const createStore = () => {
   return new Vuex.Store({
     state: {
       loadedMemos: [],
-      loadedTags: []
+      loadedTags: [],
+      memo: ''
     },
     mutations: {
       setMemos(state, memos){
@@ -17,6 +18,10 @@ const createStore = () => {
       },
       addMemo(state, memo){
         state.loadedMemos.push(memo);
+      },
+      updateMemo(state, memo){
+        const index = state.loadedMemos.findIndex((v) => v.id === memo.id)
+        state.loadedMemos[index].splice(index, 1, memo)
       },
       deleteMemo(state, id){
         const index = state.loadedMemos.findIndex((v) => v.id === id)
@@ -65,6 +70,14 @@ const createStore = () => {
           commit('addMemo', res.data)
         })
         .catch((e) => console.log(e))
+      },
+      updateMemo({ commit }, { id, content, tag_ids }){
+        return this.$axios
+        .patch(`${url}/memos/${id}`, { memo: { content: content, tag_ids: tag_ids} })
+        .then((res) => {
+          commit('updateMemo', res.data)
+        })
+        .catch((e) => console.log(e)) 
       },
       deleteMemo({ commit }, id){
         return this.$axios
