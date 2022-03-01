@@ -23,10 +23,10 @@
         {{ isEdit ? "保存" : "編集" }}
       </button>
     </div>
-    <button v-if="(memo.status = 'inprogress')" @click="changeDone(memo)">
+    <button v-if="memo.status === 'inprogress'" @click="changeDone(memo)">
       未了
     </button>
-    <button v-else-if="(memo.status = 'done')" @click="changeInprogress(memo)">
+    <button v-else-if="memo.status === 'done'" @click="changeInprogress(memo)">
       完了
     </button>
     <button>
