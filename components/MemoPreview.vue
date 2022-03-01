@@ -1,8 +1,11 @@
 <template>
   <div>
-    <nuxt-link v-bind:to="`/memo/${memo.id}`">
+    <nuxt-link :to="`/memo/${memo.id}`">
       {{ memo.id }}
       {{ memo.content }}
+      <li class="tag-list" v-for="tag in memo.tags" :key="tag.id">
+        タグ-{{ tag.name }}
+      </li>
     </nuxt-link>
     <button @click="deleteMemo(memo)">削除</button>
     <button v-if="memo.is_like" @click="unFavo(memo)">お気に入り解除</button>
@@ -39,3 +42,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.tag-list {
+  display: inline-block;
+  padding: 10px;
+  text-decoration: none;
+}
+</style>
