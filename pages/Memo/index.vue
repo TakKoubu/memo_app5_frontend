@@ -12,7 +12,6 @@
       </option>
     </select>
     <button @click="searchMemo">Search</button>
-    {{ loadedMemos[0] && loadedMemos[0].status }}
     <MemoPreview v-for="memo in loadedMemos" :key="memo.id" :memo="memo" />
   </section>
 </template>

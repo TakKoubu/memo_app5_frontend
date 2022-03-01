@@ -45,16 +45,10 @@ const createStore = () => {
       memoSet(state, memo) {
         state.memo = memo
       },
-      changeDone(state, memo) {
+      changeStatus(state, memo) {
         const index = state.loadedMemos.findIndex((v) => v.id === memo.id)
         const object = state.loadedMemos[index] 
-        object.status = 'done'
-        state.loadedMemos.splice(index, 1, object)
-      },
-      changeInprogress(state, memo) {
-        const index = state.loadedMemos.findIndex((v) => v.id === memo.id)
-        const object = state.loadedMemos[index] 
-        object.status = 'inprogress'
+        object.status = memo.status
         state.loadedMemos.splice(index, 1, object)
       },
     },
@@ -121,16 +115,20 @@ const createStore = () => {
       },
       changeDone({ commit }, memo) {
         return this.$axios
-        .post(`${url}/memos/${memo.id}/statuses`)
+        .patch(`${url}/memos/${memo.id}/statuses`, {
+          memo: { content: memo.content, tag_ids: memo.tags, status: 'done'}
+        })
         .then((res) => {
-          commit('changeDone', res.data)
+          commit('changeStatus', res.data)
         })
       },
       changeInprogress({ commit }, memo) {
         return this.$axios
-        .delete(`${url}/memos/${memo.id}/statuses`)
+        .patch(`${url}/memos/${memo.id}/statuses`, {
+          memo: { content: memo.content, tag_ids: memo.tags, status: 'inprogress'}
+        })
         .then((res) => {
-          commit('changeInprogress', res.data)
+          commit('changeStatus', res.data)
         })
       },
     },
