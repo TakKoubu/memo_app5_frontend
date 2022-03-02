@@ -23,6 +23,12 @@
         {{ isEdit ? "保存" : "編集" }}
       </button>
     </div>
+    <button v-if="memo.status === 'inprogress'" @click="changeDone(memo)">
+      未了
+    </button>
+    <button v-else-if="memo.status === 'done'" @click="changeInprogress(memo)">
+      完了
+    </button>
     <button>
       <nuxt-link :to="`/editmemo/${memo.id}`">編集</nuxt-link>
     </button>
@@ -64,7 +70,6 @@ export default {
       });
     },
     updateMemo(memo) {
-      console.log(memo);
       this.$store
         .dispatch("updateMemo", {
           id: memo.id,
@@ -74,6 +79,16 @@ export default {
         .then(() => {
           this.$router.push("/memo");
         });
+    },
+    changeDone(memo) {
+      this.$store.dispatch("changeDone", memo).then(() => {
+        this.$router.push("/memo");
+      });
+    },
+    changeInprogress(memo) {
+      this.$store.dispatch("changeInprogress", memo).then(() => {
+        this.$router.push("/memo");
+      });
     },
   },
 };
