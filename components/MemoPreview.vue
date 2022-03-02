@@ -23,10 +23,13 @@
         {{ isEdit ? "保存" : "編集" }}
       </button>
     </div>
-    <button v-if="memo.status === 'inprogress'" @click="changeDone(memo)">
+    <button v-if="memo.status === 'inprogress'" @click="changeStatus('done')">
       未了
     </button>
-    <button v-else-if="memo.status === 'done'" @click="changeInprogress(memo)">
+    <button
+      v-else-if="memo.status === 'done'"
+      @click="changeStatus('inprogress')"
+    >
       完了
     </button>
     <button>
@@ -80,15 +83,15 @@ export default {
           this.$router.push("/memo");
         });
     },
-    changeDone(memo) {
-      this.$store.dispatch("changeDone", memo).then(() => {
-        this.$router.push("/memo");
-      });
-    },
-    changeInprogress(memo) {
-      this.$store.dispatch("changeInprogress", memo).then(() => {
-        this.$router.push("/memo");
-      });
+    changeStatus(status) {
+      this.$store
+        .dispatch("changeStatus", {
+          id: this.memo.id,
+          status: status,
+        })
+        .then(() => {
+          this.$router.push("/memo");
+        });
     },
   },
 };

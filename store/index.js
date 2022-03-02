@@ -53,9 +53,9 @@ const createStore = () => {
       },
     },
     actions: {
-      fetchMemos({ commit }){
+      fetchMemos({ commit }, params){
         return this.$axios
-        .get(`${url}/memos`)
+        .get(`${url}/memos`, params)
         .then((res) => {
           commit('setMemos', res.data)
         })
@@ -113,19 +113,10 @@ const createStore = () => {
           commit('memoSet', res)
         })
       },
-      changeDone({ commit }, memo) {
+      changeStatus({ commit }, {id, status}) {
         return this.$axios
-        .patch(`${url}/memos/${memo.id}/statuses`, {
-          memo: { content: memo.content, tag_ids: memo.tags, status: 'done'}
-        })
-        .then((res) => {
-          commit('changeStatus', res.data)
-        })
-      },
-      changeInprogress({ commit }, memo) {
-        return this.$axios
-        .patch(`${url}/memos/${memo.id}/statuses`, {
-          memo: { content: memo.content, tag_ids: memo.tags, status: 'inprogress'}
+        .patch(`${url}/memos/${id}/statuses`, {
+          memo: { status: status}
         })
         .then((res) => {
           commit('changeStatus', res.data)
