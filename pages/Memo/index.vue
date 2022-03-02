@@ -46,21 +46,14 @@ export default {
   methods: {
     ...mapActions(["fetchMemos"]),
     searchMemo() {
-      axios
-        .get("http://localhost:5000/api/memos", {
-          params: {
-            q: this.query,
-          },
-          paramsSerializer(params) {
-            return Qs.stringify(params, { arrayFormat: "brackets" });
-          },
-        })
-        .then((res) => {
-          this.$store.commit("setMemos", res.data);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+      this.$store.dispatch("fetchMemos", {
+        params: {
+          q: this.query,
+        },
+        paramsSerializer(params) {
+          return Qs.stringify(params, { arrayFormat: "brackets" });
+        },
+      });
     },
     ...mapActions(["fetchTags"]),
   },
